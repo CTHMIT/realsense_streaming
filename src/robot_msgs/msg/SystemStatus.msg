@@ -1,0 +1,5 @@
+std_msgs/Header header
+float32 cpu_usage
+float32 memory_usage
+float32 network_bandwidth_mbps
+string status

@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>orin_sensors</name>
+  <name>robot_description</name>
   <version>0.0.0</version>
-  <description>Sensor configurations for Orin</description>
+  <description>Holds the robot URDF and XRDF</description>
   <maintainer email="chuntsehsu@gmail.com">cthsu</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_python</buildtool_depend>
 
-  <exec_depend>realsense2_camera</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

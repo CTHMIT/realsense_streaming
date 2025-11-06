@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import setup
 
-package_name = 'orin_sensors'
+package_name = 'robot_diagnostics'
 
 setup(
     name=package_name,
@@ -12,6 +12,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), 
+            glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'config'), 
             glob('config/*.yaml')),
     ],
@@ -19,7 +21,7 @@ setup(
     zip_safe=True,
     maintainer='cthsu',
     maintainer_email='chuntsehsu@gmail.com',
-    description='Sensor configurations for Orin',
+    description='Diagnostics aggregator for the robot',
     license='MIT',
     tests_require=['pytest'],
     entry_points={

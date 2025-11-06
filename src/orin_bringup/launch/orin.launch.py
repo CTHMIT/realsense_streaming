@@ -67,7 +67,18 @@ def generate_launch_description():
                     ('image_compressed', '/camera/color/image_compressed/h264'),
                 ]
             ),
-            
+
+            ComposableNode(
+                package='topic_tools',
+                plugin='topic_tools::RelayNode',
+                name='relay_color_info',
+                parameters=[{
+                    'input_topic': '/camera/color/camera_info',
+                    'output_topic': '/camera/color/camera_info',
+                    'lazy': False
+                }]
+            ),
+                        
             # H264 - Infra1
             ComposableNode(
                 package='isaac_ros_h264_encoder',
@@ -82,6 +93,17 @@ def generate_launch_description():
                     ('image_raw', '/camera/infra1/image_rect_raw'),
                     ('image_compressed', '/camera/infra1/image_compressed/h264'),
                 ]
+            ),
+
+            ComposableNode(
+                package='topic_tools',
+                plugin='topic_tools::RelayNode',
+                name='relay_color_info',
+                parameters=[{
+                    'input_topic': '/camera/infra1/camera_info',
+                    'output_topic': '/camera/infra1/camera_info',
+                    'lazy': False
+                }]
             ),
             
             # H264 - Infra2
@@ -99,6 +121,17 @@ def generate_launch_description():
                     ('image_compressed', '/camera/infra2/image_compressed/h264'),
                 ]
             ),
+
+            ComposableNode(
+                package='topic_tools',
+                plugin='topic_tools::RelayNode',
+                name='relay_color_info',
+                parameters=[{
+                    'input_topic': '/camera/infra2/camera_info',
+                    'output_topic': '/camera/infra2/camera_info',
+                    'lazy': False
+                }]
+            ),
             
             # zdepth_image_transport
             ComposableNode(
@@ -113,6 +146,17 @@ def generate_launch_description():
                     ('in', '/camera/aligned_depth_to_color/image_raw'),
                     ('out/compressed', '/camera/depth/compressed'),
                 ]
+            ),
+
+            ComposableNode(
+                package='topic_tools',
+                plugin='topic_tools::RelayNode',
+                name='relay_color_info',
+                parameters=[{
+                    'input_topic': '/camera/depth/camera_info',
+                    'output_topic': '/camera/depth/camera_info',
+                    'lazy': False
+                }]
             ),
         ],
         output='screen'

@@ -108,17 +108,29 @@ def generate_launch_description():
                 ]
             ),
             
+            # Re-transfer
+            ComposableNode(
+                package='image_transport',
+                plugin='image_transport::Republisher',
+                name='depth_decompressor',
+                parameters=[{
+                    'in_transport': 'compressedDepth',
+                    'out_transport': 'raw',
+                }],
+                remappings=[
+                    ('in', '/camera/depth'),
+                    ('out', '/camera/depth/decompressed'),
+                ]
+            ),
+            
             # Nvblox
             ComposableNode(
                 package='nvblox_ros',
                 plugin='nvblox::NvbloxNode',
                 name='nvblox_node',
-                parameters=[
-                    nvblox_config,
-                    {'depth_image_transport': 'compressedDepth'},
-                ],
+                parameters=[nvblox_config], 
                 remappings=[
-                    ('depth/image', '/camera/depth/compressed'),
+                    ('depth/image', '/camera/depth/decompressed'),
                     ('depth/camera_info', '/camera/depth/camera_info'),
                     ('color/image', '/server/color/image_raw'),
                     ('color/camera_info', '/server/color/camera_info'),

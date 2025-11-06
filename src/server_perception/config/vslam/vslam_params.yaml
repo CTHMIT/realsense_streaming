@@ -21,9 +21,9 @@ visual_slam:
     odom_frame: "odom"
     base_frame: "base_link"
     camera_optical_frames: 
-      - "nfra1_optical_frame"
+      - "infra1_optical_frame"
       - "infra2_optical_frame"
-    imu_frame: "imu_optical_frame"
+    imu_frame: "camera_imu_optical_frame"
     
     enable_slam_visualization: true
     enable_landmarks_view: true

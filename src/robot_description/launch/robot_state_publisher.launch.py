@@ -4,7 +4,6 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-import xacro
 
 def generate_launch_description():
 
@@ -16,15 +15,13 @@ def generate_launch_description():
 
     # URDF
     pkg_path = get_package_share_directory('robot_description')
-    xacro_file = os.path.join(pkg_path, 'urdf', 'mir_ur.urdf.xacro')
+    urdf_file = os.path.join(pkg_path, 'urdf', 'mir_ur.urdf')
     
-    # check xacro 
-    if not os.path.exists(xacro_file):
-        raise Exception(f"URDF file not found at: {xacro_file}")
+    if not os.path.exists(urdf_file):
+        raise Exception(f"URDF file not found at: {urdf_file}")
 
-    # xacro
-    robot_description_config = xacro.process_file(xacro_file)
-    robot_description = robot_description_config.toxml()
+    with open(urdf_file, 'r') as f:
+        robot_description = f.read()
 
     # Robot State Publisher Node
     robot_state_publisher_node = Node(

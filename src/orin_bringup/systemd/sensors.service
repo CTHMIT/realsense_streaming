@@ -9,6 +9,8 @@ User=orin
 Group=orin
 WorkingDirectory=/home/orin
 
+ExecStartPre=/bin/bash -c 'until ping -c1 10.28.121.28; do sleep 1; done'
+
 Environment="ROS_DOMAIN_ID=161"
 Environment="RMW_IMPLEMENTATION=rmw_cyclonedds_cpp"
 Environment="CYCLONEDDS_URI=file:///home/orin/robot_vision_system_ws/config/dds/cyclonedds_orin.xml"
