@@ -20,8 +20,8 @@ def generate_launch_description():
     
     # DDS
     cyclonedds_config = PathJoinSubstitution([
-        FindPackageShare('server_bringup'),
-        'config', 'dds', 'cyclonedds_server.xml'
+        FindPackageShare('camera_bringup'),
+        'config', 'dds', 'cyclonedds_camera.xml'
     ])
     
     set_domain_id = SetEnvironmentVariable('ROS_DOMAIN_ID', '161')
@@ -31,13 +31,13 @@ def generate_launch_description():
     
     # VSLAM
     vslam_config = PathJoinSubstitution([
-        FindPackageShare('server_perception'),
+        FindPackageShare('camera_perception'),
         'config', 'vslam', 'vslam_params.yaml'
     ])
     
     # Nvblox
     nvblox_config = PathJoinSubstitution([
-        FindPackageShare('server_perception'),
+        FindPackageShare('camera_perception'),
         'config', 'nvblox', 'nvblox_realsense.yaml'
     ])
     
@@ -59,7 +59,7 @@ def generate_launch_description():
                 }],
                 remappings=[
                     ('image_compressed', '/camera/color/image_compressed/h264'),
-                    ('image_raw', '/server/color/image_raw'),
+                    ('image_raw', '/camera/color/image_raw'),
                 ]
             ),
             
@@ -74,7 +74,7 @@ def generate_launch_description():
                 }],
                 remappings=[
                     ('image_compressed', '/camera/infra1/image_compressed/h264'),
-                    ('image_raw', '/server/infra1/image_raw'),
+                    ('image_raw', '/camera/infra1/image_raw'),
                 ]
             ),
             
@@ -89,7 +89,7 @@ def generate_launch_description():
                 }],
                 remappings=[
                     ('image_compressed', '/camera/infra2/image_compressed/h264'),
-                    ('image_raw', '/server/infra2/image_raw'),
+                    ('image_raw', '/camera/infra2/image_raw'),
                 ]
             ),
             
@@ -100,10 +100,10 @@ def generate_launch_description():
                 name='visual_slam',
                 parameters=[vslam_config],
                 remappings=[
-                    ('visual_slam/image_0', '/server/infra1/image_raw'),
-                    ('visual_slam/camera_info_0', '/server/infra1/camera_info'),
-                    ('visual_slam/image_1', '/server/infra2/image_raw'),
-                    ('visual_slam/camera_info_1', '/server/infra2/camera_info'),
+                    ('visual_slam/image_0', '/camera/infra1/image_raw'),
+                    ('visual_slam/camera_info_0', '/camera/infra1/camera_info'),
+                    ('visual_slam/image_1', '/camera/infra2/image_raw'),
+                    ('visual_slam/camera_info_1', '/camera/infra2/camera_info'),
                     ('visual_slam/imu', '/camera/imu'),
                 ]
             ),
@@ -118,8 +118,10 @@ def generate_launch_description():
                     'out_transport': 'raw',
                 }],
                 remappings=[
-                    ('in', '/camera/depth'),
+                    ('in', '/camera/depth'),  # 订阅压缩的深度图
+                    ('in/camera_info', '/camera/depth/camera_info'),
                     ('out', '/camera/depth/decompressed'),
+                    ('out/camera_info', '/camera/depth/decompressed/camera_info'),
                 ]
             ),
             
@@ -132,8 +134,8 @@ def generate_launch_description():
                 remappings=[
                     ('depth/image', '/camera/depth/decompressed'),
                     ('depth/camera_info', '/camera/depth/camera_info'),
-                    ('color/image', '/server/color/image_raw'),
-                    ('color/camera_info', '/server/color/camera_info'),
+                    ('color/image', '/camera/color/image_raw'),
+                    ('color/camera_info', '/camera/color/camera_info'),
                     ('pose', '/visual_slam/tracking/odometry'),
                 ]
             ),
@@ -145,8 +147,8 @@ def generate_launch_description():
     rviz = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
-                FindPackageShare('server_bringup'),
-                'launch', 'server_visualization.launch.py'
+                FindPackageShare('camera_bringup'),
+                'launch', 'camera_visualization.launch.py'
             ])
         ])
     )
@@ -156,7 +158,7 @@ def generate_launch_description():
         set_domain_id,
         set_rmw,
         set_dds_config,
-        LogInfo(msg=['Start the server processing node, namespace: ',
+        LogInfo(msg=['Start the camera processing node, namespace: ',
                      LaunchConfiguration('robot_namespace')]),
         perception_container,
         rviz,
