@@ -24,7 +24,7 @@ def generate_launch_description():
         'config', 'dds', 'cyclonedds_server.xml'
     ])
     
-    set_domain_id = SetEnvironmentVariable('ROS_DOMAIN_ID', '16')
+    set_domain_id = SetEnvironmentVariable('ROS_DOMAIN_ID', '161')
     set_rmw = SetEnvironmentVariable('RMW_IMPLEMENTATION', 'rmw_cyclonedds_cpp')
     set_dds_config = SetEnvironmentVariable('CYCLONEDDS_URI',
         ['file://', cyclonedds_config])
