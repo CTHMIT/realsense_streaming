@@ -36,7 +36,6 @@ if [[ "$MACHINE_TYPE" == "server" ]]; then
 else
     read -p "Please enter the server IP address: " SERVER_IP
     sudo cp "$WS_ROOT/config/chrony/client.conf" /etc/chrony/chrony.conf
-    sudo sed -i "s/10.28.121.28/$SERVER_IP/g" /etc/chrony/chrony.conf
 fi
 sudo systemctl restart chronyd
 sudo systemctl enable chronyd

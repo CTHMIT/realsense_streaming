@@ -21,7 +21,7 @@ def generate_launch_description():
     # DDS
     cyclonedds_config = PathJoinSubstitution([
         FindPackageShare('server_bringup'),
-        'config', 'dds', 'cyclonedds_camera.xml'
+        'config', 'dds', 'cyclonedds_server.xml'
     ])
     
     set_domain_id = SetEnvironmentVariable('ROS_DOMAIN_ID', '161')
@@ -118,7 +118,7 @@ def generate_launch_description():
                     'out_transport': 'raw',
                 }],
                 remappings=[
-                    ('in', '/camera/depth'),  # 订阅压缩的深度图
+                    ('in', '/camera/depth'), 
                     ('in/camera_info', '/camera/depth/camera_info'),
                     ('out', '/camera/depth/decompressed'),
                     ('out/camera_info', '/camera/depth/decompressed/camera_info'),
