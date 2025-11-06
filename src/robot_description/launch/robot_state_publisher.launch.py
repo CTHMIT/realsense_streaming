@@ -16,7 +16,7 @@ def generate_launch_description():
 
     # URDF
     pkg_path = get_package_share_directory('robot_description')
-    xacro_file = os.path.join(pkg_path, 'urdf', 'robot.urdf.xacro')
+    xacro_file = os.path.join(pkg_path, 'urdf', 'mir_ur.urdf.xacro')
     
     # check xacro 
     if not os.path.exists(xacro_file):
