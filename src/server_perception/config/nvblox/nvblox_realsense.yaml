@@ -1,6 +1,15 @@
-/robot1/nvblox_node:
+nvblox_node:
   ros__parameters:
+
+    # General params
+    global_frame: "odom"
+    pose_frame: "base_link"
+    map_frame: "map"
+
     voxel_size: 0.05  
+
+    # Reconstruction type
+    projective_layer_type: "tsdf"
     
     # TSDF
     tsdf_integrator_max_integration_distance_m: 10.0
@@ -8,6 +17,8 @@
     tsdf_integrator_max_weight: 10.0
     
     # ESDF
+    esdf_mode: "3d"
+    esdf_distance_slice: 1.0
     esdf_integrator_max_esdf_distance_m: 2.0
     esdf_integrator_max_site_distance_vox: 1.0
     esdf_integrator_min_weight: 0.0001
@@ -22,11 +33,12 @@
     
     # TF
     use_tf_transforms: true
-    global_frame: "odom"
     
     use_color: true
     use_lidar: false
     
-    max_poll_rate_hz: 100.0
+    max_poll_rate_hz: 10.0
     esdf_update_rate_hz: 10.0
     mesh_update_rate_hz: 5.0
+
+    timing_output_path: "/tmp/nvblox_timing.log"
