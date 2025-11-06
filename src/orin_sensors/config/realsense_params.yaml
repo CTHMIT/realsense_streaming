@@ -1,0 +1,38 @@
+/robot1/realsense_d435i:
+  ros__parameters:
+                 
+    serial_no: "_327122073781"
+    usb_port_id: ""
+    device_type: "d435i"
+    
+    enable_color: true
+    enable_depth: true
+    enable_infra1: true
+    enable_infra2: true
+    enable_gyro: true
+    enable_accel: true
+    
+    rgb_camera.profile: "848x480x30"
+    depth_module.profile: "848x480x30"
+    infra1_camera.profile: "848x480x30"
+    infra2_camera.profile: "848x480x30"
+    
+    gyro_fps: 200
+    accel_fps: 200
+    unite_imu_method: "linear_interpolation"
+    
+    depth_module.emitter_enabled: 0
+    
+    align_depth.enable: true
+    enable_sync: true
+    
+    depth_qos: "SENSOR_DATA"
+    color_qos: "SENSOR_DATA"
+    infra_qos: "SENSOR_DATA"
+    
+    publish_tf: true
+    tf_publish_rate: 10.0
+    base_frame_id: "camera_link"
+    
+    depth_module.exposure: 8500
+    depth_module.gain: 16

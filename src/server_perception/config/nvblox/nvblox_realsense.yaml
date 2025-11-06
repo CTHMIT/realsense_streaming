@@ -1,0 +1,32 @@
+/robot1/nvblox_node:
+  ros__parameters:
+    voxel_size: 0.05  
+    
+    # TSDF
+    tsdf_integrator_max_integration_distance_m: 10.0
+    tsdf_integrator_truncation_distance_vox: 4.0
+    tsdf_integrator_max_weight: 10.0
+    
+    # ESDF
+    esdf_integrator_max_esdf_distance_m: 2.0
+    esdf_integrator_max_site_distance_vox: 1.0
+    esdf_integrator_min_weight: 0.0001
+    
+    mesh_integrator_min_weight: 1e-4
+    mesh_integrator_weld_vertices: false
+    
+    use_depth: true
+    depth_preprocessing_num_dilations: 4
+    depth_preprocessing_num_erosions: 4
+    max_back_projection_distance: 10.0
+    
+    # TF
+    use_tf_transforms: true
+    global_frame: "odom"
+    
+    use_color: true
+    use_lidar: false
+    
+    max_poll_rate_hz: 100.0
+    esdf_update_rate_hz: 10.0
+    mesh_update_rate_hz: 5.0
