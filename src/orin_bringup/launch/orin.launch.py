@@ -68,16 +68,6 @@ def generate_launch_description():
                 ]
             ),
 
-            ComposableNode(
-                package='topic_tools',
-                plugin='topic_tools::RelayNode',
-                name='relay_color_info',
-                parameters=[{
-                    'input_topic': '/camera/color/camera_info',
-                    'output_topic': '/camera/color/camera_info',
-                    'lazy': False
-                }]
-            ),
                         
             # H264 - Infra1
             ComposableNode(
@@ -95,16 +85,7 @@ def generate_launch_description():
                 ]
             ),
 
-            ComposableNode(
-                package='topic_tools',
-                plugin='topic_tools::RelayNode',
-                name='relay_color_info',
-                parameters=[{
-                    'input_topic': '/camera/infra1/camera_info',
-                    'output_topic': '/camera/infra1/camera_info',
-                    'lazy': False
-                }]
-            ),
+
             
             # H264 - Infra2
             ComposableNode(
@@ -122,16 +103,7 @@ def generate_launch_description():
                 ]
             ),
 
-            ComposableNode(
-                package='topic_tools',
-                plugin='topic_tools::RelayNode',
-                name='relay_color_info',
-                parameters=[{
-                    'input_topic': '/camera/infra2/camera_info',
-                    'output_topic': '/camera/infra2/camera_info',
-                    'lazy': False
-                }]
-            ),
+
             
             # zdepth_image_transport
             ComposableNode(
@@ -148,16 +120,6 @@ def generate_launch_description():
                 ]
             ),
 
-            ComposableNode(
-                package='topic_tools',
-                plugin='topic_tools::RelayNode',
-                name='relay_color_info',
-                parameters=[{
-                    'input_topic': '/camera/depth/camera_info',
-                    'output_topic': '/camera/depth/camera_info',
-                    'lazy': False
-                }]
-            ),
         ],
         output='screen'
     )

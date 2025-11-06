@@ -20,7 +20,7 @@ def generate_launch_description():
     
     # DDS
     cyclonedds_config = PathJoinSubstitution([
-        FindPackageShare('camera_bringup'),
+        FindPackageShare('server_bringup'),
         'config', 'dds', 'cyclonedds_camera.xml'
     ])
     
@@ -31,13 +31,13 @@ def generate_launch_description():
     
     # VSLAM
     vslam_config = PathJoinSubstitution([
-        FindPackageShare('camera_perception'),
+        FindPackageShare('server_perception'),
         'config', 'vslam', 'vslam_params.yaml'
     ])
     
     # Nvblox
     nvblox_config = PathJoinSubstitution([
-        FindPackageShare('camera_perception'),
+        FindPackageShare('server_perception'),
         'config', 'nvblox', 'nvblox_realsense.yaml'
     ])
     
@@ -147,7 +147,7 @@ def generate_launch_description():
     rviz = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
-                FindPackageShare('camera_bringup'),
+                FindPackageShare('server_bringup'),
                 'launch', 'camera_visualization.launch.py'
             ])
         ])

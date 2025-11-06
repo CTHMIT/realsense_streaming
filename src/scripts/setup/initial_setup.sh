@@ -32,11 +32,11 @@ sudo apt install -y \
 echo ""
 echo "[2/7] Configure time synchronization..."
 if [[ "$MACHINE_TYPE" == "server" ]]; then
-    sudo cp "$WS_ROOT/config/chrony/chrony_server.conf" /etc/chrony/chrony.conf
+    sudo cp "$WS_ROOT/config/chrony/server.conf" /etc/chrony/chrony.conf
 else
     read -p "Please enter the server IP address: " SERVER_IP
-    sudo cp "$WS_ROOT/config/chrony/chrony_client.conf" /etc/chrony/chrony.conf
-    sudo sed -i "s/192.168.1.100/$SERVER_IP/g" /etc/chrony/chrony.conf
+    sudo cp "$WS_ROOT/config/chrony/client.conf" /etc/chrony/chrony.conf
+    sudo sed -i "s/10.28.121.28/$SERVER_IP/g" /etc/chrony/chrony.conf
 fi
 sudo systemctl restart chronyd
 sudo systemctl enable chronyd
@@ -74,7 +74,12 @@ source /opt/ros/humble/setup.bash
 source $WS_ROOT/install/setup.bash
 export ROS_DOMAIN_ID=$ROS_DOMAIN_ID
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-export CYCLONEDDS_URI=file://$WS_ROOT/config/dds/cyclonedds_$MACHINE_TYPE.xml
+
+if [[ \"\$MACHINE_TYPE\" == \"orin\" ]]; then
+    export CYCLONEDDS_URI=file://$WS_ROOT/src/orin_bringup/config/dds/cyclonedds_orin.xml
+else
+    export CYCLONEDDS_URI=file://$WS_ROOT/src/server_bringup/config/dds/cyclonedds_server.xml
+fi
 "
 
 if ! grep -q "ROS2 multi-machine distributed system environment" ~/.bashrc; then
