@@ -1,4 +1,4 @@
-/robot1/realsense_d435i:
+/**:
   ros__parameters:
                  
     serial_no: "_327122073781"
@@ -26,13 +26,46 @@
     align_depth.enable: true
     enable_sync: true
     
+    # QoS settings
     depth_qos: "SENSOR_DATA"
     color_qos: "SENSOR_DATA"
     infra_qos: "SENSOR_DATA"
+    imu_qos: "SENSOR_DATA"
     
+    # TF publishing
     publish_tf: true
     tf_publish_rate: 10.0
-    base_frame_id: "camera_link"
     
+    # Frame IDs
+    base_frame_id: "camera_link"
+    depth_frame_id: "camera_depth_frame"
+    infra1_frame_id: "camera_infra1_frame"
+    infra2_frame_id: "camera_infra2_frame"
+    color_frame_id: "camera_color_frame"
+    depth_optical_frame_id: "camera_depth_optical_frame"
+    infra1_optical_frame_id: "camera_infra1_optical_frame"
+    infra2_optical_frame_id: "camera_infra2_optical_frame"
+    color_optical_frame_id: "camera_color_optical_frame"
+    gyro_frame_id: "camera_gyro_frame"
+    accel_frame_id: "camera_accel_frame"
+    imu_optical_frame_id: "camera_imu_optical_frame"
+    aligned_depth_to_color_frame_id: "camera_aligned_depth_to_color_frame"
+    
+    # Depth settings
     depth_module.exposure: 8500
     depth_module.gain: 16
+    
+    # Enable metadata
+    enable_depth_to_color: false
+    enable_depth_to_infra1: false
+    enable_depth_to_infra2: false
+    
+    # Topic names 
+    depth_module.depth_image_topic: "depth/image_rect_raw"
+    depth_module.depth_info_topic: "depth/camera_info"
+    color_module.color_image_topic: "color/image_raw"
+    color_module.color_info_topic: "color/camera_info"
+    infra1_module.infra1_image_topic: "infra1/image_rect_raw"
+    infra1_module.infra1_info_topic: "infra1/camera_info"
+    infra2_module.infra2_image_topic: "infra2/image_rect_raw"
+    infra2_module.infra2_info_topic: "infra2/camera_info"

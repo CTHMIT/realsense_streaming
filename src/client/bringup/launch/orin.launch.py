@@ -9,14 +9,14 @@ from launch.substitutions import (
 )
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
   
     robot_namespace_arg = DeclareLaunchArgument(
         'robot_namespace',
-        default_value='client',
+        default_value='',  # Empty namespace for global topics
         description='Robot namespace'
     )
     
@@ -37,22 +37,23 @@ def generate_launch_description():
         'sensors', 'config', 'realsense_params.yaml'
     ])
     
-    # NITROS
+    # NITROS Container
     isaac_container = ComposableNodeContainer(
         name='isaac_container',
         namespace=LaunchConfiguration('robot_namespace'),
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[
-            # RealSense
+            # RealSense Camera
             ComposableNode(
                 package='realsense2_camera',
                 plugin='realsense2_camera::RealSenseNodeFactory',
                 name='camera',
                 parameters=[realsense_config],
+                extra_arguments=[{'use_intra_process_comms': True}]
             ),
             
-            # H264 - Color
+            # H264 Encoder - Color
             ComposableNode(
                 package='isaac_ros_h264_encoder',
                 plugin='nvidia::isaac_ros::h264_encoder::EncoderNode',
@@ -61,15 +62,19 @@ def generate_launch_description():
                     'input_width': 848,
                     'input_height': 480,
                     'config': 'pframe',
+                    'profile': 'main',
+                    'qp': 20,
+                    'hw_preset_type': 'medium',
+                    'iframe_interval': 30,
                 }],
                 remappings=[
                     ('image_raw', '/camera/color/image_raw'),
                     ('image_compressed', '/camera/color/image_compressed/h264'),
-                ]
+                ],
+                extra_arguments=[{'use_intra_process_comms': True}]
             ),
-
-                        
-            # H264 - Infra1
+            
+            # H264 Encoder - Infra1
             ComposableNode(
                 package='isaac_ros_h264_encoder',
                 plugin='nvidia::isaac_ros::h264_encoder::EncoderNode',
@@ -78,16 +83,19 @@ def generate_launch_description():
                     'input_width': 848,
                     'input_height': 480,
                     'config': 'pframe',
+                    'profile': 'main',
+                    'qp': 20,
+                    'hw_preset_type': 'medium',
+                    'iframe_interval': 30,
                 }],
                 remappings=[
                     ('image_raw', '/camera/infra1/image_rect_raw'),
                     ('image_compressed', '/camera/infra1/image_compressed/h264'),
-                ]
+                ],
+                extra_arguments=[{'use_intra_process_comms': True}]
             ),
-
-
             
-            # H264 - Infra2
+            # H264 Encoder - Infra2
             ComposableNode(
                 package='isaac_ros_h264_encoder',
                 plugin='nvidia::isaac_ros::h264_encoder::EncoderNode',
@@ -96,30 +104,34 @@ def generate_launch_description():
                     'input_width': 848,
                     'input_height': 480,
                     'config': 'pframe',
+                    'profile': 'main',
+                    'qp': 20,
+                    'hw_preset_type': 'medium',
+                    'iframe_interval': 30,
                 }],
                 remappings=[
                     ('image_raw', '/camera/infra2/image_rect_raw'),
                     ('image_compressed', '/camera/infra2/image_compressed/h264'),
-                ]
+                ],
+                extra_arguments=[{'use_intra_process_comms': True}]
             ),
-
-
-            
-            # zdepth_image_transport
-            ComposableNode(
-                package='image_transport',
-                plugin='image_transport::Publisher',
-                name='depth_publisher',
-                parameters=[{
-                    'transport': 'compressedDepth',
-                    'depth_image_transport.compression_format': 'zstd',
-                }],
-                remappings=[
-                    ('in', '/camera/aligned_depth_to_color/image_raw'),
-                    ('out/compressed', '/camera/depth/compressed'),
-                ]
-            ),
-
+        ],
+        output='screen'
+    )
+    
+    depth_compressor = Node(
+        package='image_transport',
+        executable='republish',
+        name='depth_compressor',
+        namespace=LaunchConfiguration('robot_namespace'),
+        arguments=[
+            'raw',
+            'compressedDepth',
+            '--ros-args',
+            '--remap', 'in:=/camera/aligned_depth_to_color/image_raw',
+            '--remap', 'out/compressedDepth:=/camera/depth/compressedDepth',
+            '--param', 'compressedDepth.format:=png',
+            '--param', 'compressedDepth.png_level:=3',
         ],
         output='screen'
     )
@@ -150,9 +162,10 @@ def generate_launch_description():
         set_domain_id,
         set_rmw,
         set_dds_config,
-        LogInfo(msg=['Start the Orin client node, namespace: ', 
+        LogInfo(msg=['Starting Orin client node, namespace: ', 
                      LaunchConfiguration('robot_namespace')]),
         isaac_container,
+        depth_compressor,
         robot_state_publisher,
         diagnostics,
     ])
