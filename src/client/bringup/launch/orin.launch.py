@@ -136,26 +136,26 @@ def generate_launch_description():
         output='screen'
     )
     
-    robot_state_publisher = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('robot'),
-                'description', 'launch', 'robot_state_publisher.launch.py'
-            ])
-        ]),
-        launch_arguments={
-            'namespace': LaunchConfiguration('robot_namespace')
-        }.items()
-    )
+    # robot_state_publisher = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([
+    #         PathJoinSubstitution([
+    #             FindPackageShare('robot'),
+    #             'description', 'launch', 'robot_state_publisher.launch.py'
+    #         ])
+    #     ]),
+    #     launch_arguments={
+    #         'namespace': LaunchConfiguration('robot_namespace')
+    #     }.items()
+    # )
     
-    diagnostics = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('robot'),
-                'diagnostics', 'launch', 'diagnostics_aggregator.launch.py'
-            ])
-        ])
-    )
+    # diagnostics = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([
+    #         PathJoinSubstitution([
+    #             FindPackageShare('robot'),
+    #             'diagnostics', 'launch', 'diagnostics_aggregator.launch.py'
+    #         ])
+    #     ])
+    # )
     
     return LaunchDescription([
         robot_namespace_arg,
@@ -166,6 +166,6 @@ def generate_launch_description():
                      LaunchConfiguration('robot_namespace')]),
         isaac_container,
         depth_compressor,
-        robot_state_publisher,
-        diagnostics,
+        # robot_state_publisher,
+        # diagnostics,
     ])
