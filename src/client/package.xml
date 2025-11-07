@@ -4,7 +4,7 @@
   <version>0.0.0</version>
   <description>Orin client bringup package</description>
   <maintainer email="chuntsehsu@gmail.com">cthsu</maintainer>
-  <license>MIT</license>
+  <license>LicenseRef-WPVOL-1.0</license>
 
   <buildtool_depend>ament_python</buildtool_depend>
 

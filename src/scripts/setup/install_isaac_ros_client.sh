@@ -38,11 +38,6 @@ info "[3/6] Installing Isaac ROS packages..."
 
 sudo apt-get install -y \
     ros-humble-isaac-ros-h264-encoder \
-    ros-humble-isaac-ros-h264-decoder \
-    ros-humble-isaac-ros-visual-slam \
-    ros-humble-isaac-ros-nvblox \
-    ros-humble-nvblox-ros \
-    ros-humble-nvblox-rviz-plugin \
     ros-humble-isaac-ros-common \
     ros-humble-isaac-ros-image-pipeline
 

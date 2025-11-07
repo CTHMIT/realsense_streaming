@@ -9,17 +9,15 @@ services:
       target: runtime
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
-        CUDA_VERSION: ${CUDA_VERSION:-11.8.0}
-        USER_ID: ${USER_ID:-1000}
-        GROUP_ID: ${GROUP_ID:-1000}
-        USERNAME: ${USERNAME:-ros}
+        USER_ID: ${USER_ID:-orin}
+        GROUP_ID: ${GROUP_ID:-orin}
+        USERNAME: ${USERNAME:-orin}
     platform: linux/arm64
     container_name: orin
     hostname: orin
     privileged: true
     network_mode: host
     profiles: [orin, client]
-    # runtime: nvidia  # 已淘汰
     gpus: all
     environment:
       - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-161}
@@ -61,10 +59,10 @@ services:
       target: runtime
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
-        CUDA_VERSION: ${CUDA_VERSION:-11.8.0}
-        USER_ID: ${USER_ID:-1000}
-        GROUP_ID: ${GROUP_ID:-1000}
-        USERNAME: ${USERNAME:-ros}
+        CUDA_VERSION: ${CUDA_VERSION:-12.6.3}
+        USER_ID: ${USER_ID:-server}
+        GROUP_ID: ${GROUP_ID:-server}
+        USERNAME: ${USERNAME:-server}
     platform: linux/amd64
     container_name: server
     hostname: server

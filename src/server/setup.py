@@ -28,7 +28,7 @@ setup(
     maintainer='cthsu',
     maintainer_email='chuntsehsu@gmail.com',
     description='Perception nodes and configs for the server',
-    license='MIT',
+    license='Wistron Public View-Only License (WPVOL) v1.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

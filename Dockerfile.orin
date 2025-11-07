@@ -1,7 +1,6 @@
 # Orin: ARM64 (Jetson)
 ARG ROS_DISTRO=humble
-# 依你的 JetPack/L4T 版本調整，例如 36.3.0、36.4.0 等
-ARG L4T_TAG=36.3.0
+ARG L4T_TAG=36.4.7
 
 FROM nvcr.io/nvidia/l4t-cuda:${L4T_TAG} AS base
 ARG DEBIAN_FRONTEND=noninteractive
@@ -45,9 +44,8 @@ RUN groupadd -g ${GROUP_ID} ${USERNAME} && \
     usermod -aG sudo,video,plugdev ${USERNAME} && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME}
 
-# RealSense 常見裝置存取與 udev
 RUN mkdir -p /etc/udev/rules.d && \
-    echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="8086", MODE="0666"' > /etc/udev/rules.d/99-realsense-libusb.rules
+    echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="8086", MODE="0666", GROUP="plugdev"' > /etc/udev/rules.d/99-realsense-libusb.rules
 
 WORKDIR /workspace
 RUN chown -R ${USERNAME}:${USERNAME} /workspace

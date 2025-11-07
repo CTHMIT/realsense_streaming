@@ -26,7 +26,7 @@ setup(
     maintainer='cthsu',
     maintainer_email='chuntsehsu@gmail.com',
     description='Orin client bringup package',
-    license='MIT',
+    license='Wistron Public View-Only License (WPVOL) v1.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

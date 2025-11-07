@@ -23,7 +23,6 @@ python3-vcstool
 librealsense2-dev
 librealsense2-dkms
 librealsense2-utils
-ros-humble-realsense2-camera
 ros-humble-realsense2-description
 
 # Image transport
