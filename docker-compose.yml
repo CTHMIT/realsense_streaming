@@ -9,9 +9,9 @@ services:
       target: runtime
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
-        USER_ID: ${USER_ID:-orin}
-        GROUP_ID: ${GROUP_ID:-orin}
-        USERNAME: ${USERNAME:-orin}
+        USER_ID: ${USER_ID:-11408161}
+        GROUP_ID: ${GROUP_ID:-670}
+        USERNAME: ${USERNAME:-cthsu}
     platform: linux/arm64
     container_name: orin
     hostname: orin
@@ -60,9 +60,9 @@ services:
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
         CUDA_VERSION: ${CUDA_VERSION:-12.6.3}
-        USER_ID: ${USER_ID:-server}
-        GROUP_ID: ${GROUP_ID:-server}
-        USERNAME: ${USERNAME:-server}
+        USER_ID: ${USER_ID:-11408161}
+        GROUP_ID: ${GROUP_ID:-670}
+        USERNAME: ${USERNAME:-cthsu}
     platform: linux/amd64
     container_name: server
     hostname: server
