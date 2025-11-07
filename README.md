@@ -8,7 +8,7 @@ A complete robotics vision system using an NVIDIA AGX Orin to process RealSense 
 <img src="https://img.shields.io/badge/NVIDIA-JetPack%206-brightgreen.svg" alt="JetPack 6"> 
 <img src="https://img.shields.io/badge/NVIDIA-CUDA%2012.x-brightgreen.svg" alt="CUDA 12.x"> 
 <img src="https://img.shields.io/badge/Build-Passing-success.svg" alt="Build Passing"> 
-<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License MIT">
+<img src="https://img.shields.io/badge/License-WPVOL%20v1.0-yellow.svg" alt="License: WPVOL v1.0">
 
 ## System Architecture
 
