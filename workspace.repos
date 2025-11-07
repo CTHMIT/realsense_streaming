@@ -20,7 +20,7 @@ repositories:
   # Robotiq Gripper
   robotiq:
     type: git
-    url: https://github.com/PickNikRobotics/robotiq.git
+    url: https://github.com/PickNikRobotics/ros2_robotiq_gripper
     version: humble
     
   # RealSense ROS 2
