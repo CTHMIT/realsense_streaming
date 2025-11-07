@@ -1,7 +1,7 @@
 # Makefile for Robot Vision System
 # Supports both AGX Orin and Server deployment
 
-DOCKER_COMPOSE := docker-compose
+DOCKER_COMPOSE := docker compose
 PROJECT_NAME := robot-vision-system
 VERSION ?= latest
 
