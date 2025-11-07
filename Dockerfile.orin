@@ -1,6 +1,6 @@
 # Orin: ARM64 (Jetson)
 ARG ROS_DISTRO=humble
-ARG L4T_TAG=r36.3.0
+ARG L4T_TAG=r36.4.0
 
 FROM nvcr.io/nvidia/l4t-cuda:${L4T_TAG} AS base
 ARG DEBIAN_FRONTEND=noninteractive
