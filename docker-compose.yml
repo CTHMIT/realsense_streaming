@@ -62,13 +62,6 @@ services:
         USER_ID: ${USER_ID:-server}
         GROUP_ID: ${GROUP_ID:-server}
         USERNAME: ${USERNAME:-server}
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
     platform: linux/amd64
     container_name: server
     hostname: server
