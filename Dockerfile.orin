@@ -25,6 +25,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-ros-base ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
     ros-humble-ros2-control \
+    ros-humble-cv-bridge \
     python3-colcon-common-extensions \
     && rm -rf /var/lib/apt/lists/*
 
