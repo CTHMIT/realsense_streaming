@@ -2,15 +2,13 @@
 
 A complete robotics vision system using an NVIDIA AGX Orin to process RealSense D4S35i camera data, with SLAM and 3D reconstruction performed on a server.
 
-\<p align="center"\>
-\<img src="[https://img.shields.io/badge/Python-3.10+-blue.svg](https://www.google.com/search?q=https://img.shields.io/badge/Python-3.10%2B-blue.svg)" alt="Python 3.10+"\>
-\<img src="[https://img.shields.io/badge/Ubuntu-22.04-orange.svg](https://www.google.com/search?q=https://img.shields.io/badge/Ubuntu-22.04-orange.svg)" alt="Ubuntu 22.04"\>
-\<img src="[https://img.shields.io/badge/ROS%202-Humble-blueviolet.svg](https://www.google.com/search?q=https://img.shields.io/badge/ROS%25202-Humble-blueviolet.svg)" alt="ROS 2 Humble"\>
-\<img src="[https://img.shields.io/badge/NVIDIA-JetPack%206-brightgreen.svg](https://www.google.com/search?q=https://img.shields.io/badge/NVIDIA-JetPack%25206-brightgreen.svg)" alt="JetPack 6"\>
-\<img src="[https://img.shields.io/badge/NVIDIA-CUDA%2012.x-brightgreen.svg](https://www.google.com/search?q=https://img.shields.io/badge/NVIDIA-CUDA%252012.x-brightgreen.svg)" alt="CUDA 12.x"\>
-\<img src="[https://img.shields.io/badge/Build-Passing-success.svg](https://www.google.com/search?q=https://img.shields.io/badge/Build-Passing-success.svg)" alt="Build Passing"\>
-\<img src="[https://img.shields.io/badge/License-MIT-yellow.svg](https://www.google.com/search?q=https://img.shields.io/badge/License-MIT-yellow.svg)" alt="License MIT"\>
-\</p\>
+<img src="https://img.shields.io/badge/Python-3.10+-blue.svg" alt="Python 3.10+"> 
+<img src="https://img.shields.io/badge/Ubuntu-22.04-orange.svg" alt="Ubuntu 22.04"> 
+<img src="https://img.shields.io/badge/ROS%202-Humble-blueviolet.svg" alt="ROS 2 Humble"> 
+<img src="https://img.shields.io/badge/NVIDIA-JetPack%206-brightgreen.svg" alt="JetPack 6"> 
+<img src="https://img.shields.io/badge/NVIDIA-CUDA%2012.x-brightgreen.svg" alt="CUDA 12.x"> 
+<img src="https://img.shields.io/badge/Build-Passing-success.svg" alt="Build Passing"> 
+<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License MIT">
 
 ## System Architecture
 
