@@ -1,0 +1,31 @@
+[Unit]
+Description=Orin ROS2 Sensors and Encoders
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=orin
+Group=orin
+WorkingDirectory=/home/orin
+
+ExecStartPre=/bin/bash -c 'until ping -c1 10.28.121.28; do sleep 1; done'
+
+Environment="ROS_DOMAIN_ID=161"
+Environment="RMW_IMPLEMENTATION=rmw_cyclonedds_cpp"
+Environment="CYCLONEDDS_URI=file:///home/orin/robot_vision_system_ws/src/client/bringup/config/dds/cyclonedds_orin.xml"
+ExecStart=/bin/bash -c '\
+  source /opt/ros/humble/setup.bash && \
+  source /home/orin/robot_vision_system_ws/install/setup.bash && \
+  ros2 launch client orin.launch.py'
+
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=3
+StartLimitInterval=60
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
