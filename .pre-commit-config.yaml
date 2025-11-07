@@ -76,7 +76,7 @@ repos:
     hooks:
       - id: ruff
         args: [--fix, --ignore=ARG001]
-        files: ^(gst_realsense_launch/|launch/|src/launch/) # Only lint these directories
+        files: ^src/.*\.py$
 
 
   # ===== Python type checking =====
