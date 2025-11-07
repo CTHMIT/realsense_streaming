@@ -21,7 +21,7 @@ repositories:
   robotiq:
     type: git
     url: https://github.com/PickNikRobotics/robotiq.git
-    version: main
+    version: humble
     
   # RealSense ROS 2
   realsense-ros:
