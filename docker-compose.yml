@@ -16,6 +16,7 @@ services:
     container_name: orin
     hostname: orin
     privileged: true
+    runtime: nvidia
     network_mode: host
     profiles: [orin, client]
     gpus: all
