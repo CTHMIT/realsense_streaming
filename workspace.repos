@@ -27,7 +27,7 @@ repositories:
   realsense-ros:
     type: git
     url: https://github.com/IntelRealSense/realsense-ros.git
-    version: ros2-development
+    version: ros2-master
 
 # Note: Isaac ROS packages should be installed via APT
 # Run install_isaac_ros.sh script before building the workspace
