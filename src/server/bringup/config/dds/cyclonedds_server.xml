@@ -4,11 +4,7 @@
             xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
     <Domain id="any">
         <General>
-            <Interfaces>
-                <NetworkInterface>
-                    <Name>enp2s0</Name>
-                </NetworkInterface>
-            </Interfaces>
+            <NetworkInterfaceAddress>enp2s0</NetworkInterfaceAddress>
         </General>
         <Discovery>
             <Peers>
