@@ -56,9 +56,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ethtool \
     iftop \
     \
-    # RealSense SDK
-    libfastdds-dev \
-    libfastcdr-dev \
+    # RealSense SDK\
     librealsense2 \
     librealsense2-dev \
     librealsense2-utils \
