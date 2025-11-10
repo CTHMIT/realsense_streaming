@@ -40,9 +40,14 @@ services:
       - orin-data:/home/ros/.ros:rw
     command: >
       bash -lc "
-        source /opt/ros/${ROS_DISTRO:-humble}/setup.bash &&
-        [ -f /workspace/install/setup.bash ] && source /workspace/install/setup.bash || true &&
-        ros2 launch client orin.launch.py robot_namespace:=${ROBOT_NAMESPACE:-}
+        source /opt/ros/humble/setup.bash &&
+        if [ -f /workspace/install/setup.bash ]; then
+          source /workspace/install/setup.bash &&
+          ros2 launch client orin.launch.py robot_namespace:=${ROBOT_NAMESPACE:-}
+        else
+          echo 'Workspace not built. Run: docker compose run --rm orin bash' &&
+          tail -f /dev/null
+        fi
       "
     restart: ${RESTART_POLICY:-unless-stopped}
     healthcheck:
