@@ -44,6 +44,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-robot-state-publisher \
     ros-humble-xacro \
     ros-humble-diagnostic-aggregator \
+    ros-hunble-diagnostic-updater \
     && rm -rf /var/lib/apt/lists/*
 
 ENV ROS_DISTRO=${ROS_DISTRO} \
