@@ -4,10 +4,11 @@
             xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
     <Domain id="any">
         <General>
-            <NetworkInterfaceAddress>wlP1p1s0</NetworkInterfaceAddress>
+            <Interface>
+                <Name>wlP1p1s0</Name>
+            </Interface>
             <AllowMulticast>false</AllowMulticast>
             <MaxMessageSize>65500B</MaxMessageSize>
-            <Transport>UDPv4</Transport>
         </General>
         <Discovery>
             <Peers>
