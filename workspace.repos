@@ -23,11 +23,17 @@ repositories:
     url: https://github.com/PickNikRobotics/ros2_robotiq_gripper.git
     version: humble
     
-  # RealSense ROS 2
+  # RealSense ROS Wrapper
   realsense-ros:
     type: git
     url: https://github.com/IntelRealSense/realsense-ros.git
     version: ros2-master
+  
+  # RealSense SDK 2.0
+  realsense-ros:
+    type: git
+    url: https://github.com/IntelRealSense/librealsense/releases.git
+    version: master
 
 # Note: Isaac ROS packages should be installed via APT
 # Run install_isaac_ros.sh script before building the workspace
