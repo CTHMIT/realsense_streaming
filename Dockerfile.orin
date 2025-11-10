@@ -1,3 +1,8 @@
+# ============================================================================
+# Dockerfile for NVIDIA Jetson AGX Orin (ARM64)
+# Robot Vision System - Client/Orin Node
+# ============================================================================
+
 ARG ROS_DISTRO=humble
 ARG L4T_TAG=r36.4.0
 FROM nvcr.io/nvidia/l4t-jetpack:${L4T_TAG} AS base
@@ -45,50 +50,35 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # Build tools
     python3-colcon-common-extensions \
     python3-rosdep \
     python3-vcstool \
-    \
-    # Network tools
     net-tools \
     chrony \
     ethtool \
     iftop \
-    \
-    # RealSense SDK\
     librealsense2 \
     librealsense2-dev \
     librealsense2-utils \
-    \
-    # ROS 2 Humble packages
     ros-${ROS_DISTRO}-ros-base \
     ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
     ros-${ROS_DISTRO}-realsense2-description \
-    \
-    # Image transport
     ros-${ROS_DISTRO}-image-transport \
     ros-${ROS_DISTRO}-image-transport-plugins \
     ros-${ROS_DISTRO}-compressed-image-transport \
     ros-${ROS_DISTRO}-compressed-depth-image-transport \
-    \
-    # Robot control
     ros-${ROS_DISTRO}-ros2-control \
     ros-${ROS_DISTRO}-ros2-controllers \
     ros-${ROS_DISTRO}-controller-manager \
-    \
-    # Robot description
     ros-${ROS_DISTRO}-robot-state-publisher \
     ros-${ROS_DISTRO}-joint-state-publisher \
     ros-${ROS_DISTRO}-xacro \
     ros-${ROS_DISTRO}-urdf \
-    \
-    # Diagnostics
     ros-${ROS_DISTRO}-diagnostic-aggregator \
     ros-${ROS_DISTRO}-diagnostic-updater \
-    \
-    # FastRTPS (backup DDS)
     ros-${ROS_DISTRO}-fastrtps \
+    libfastrtps-dev \
+    libfastcdr-dev \
     && rm -rf /var/lib/apt/lists/*
 
 ENV ROS_DISTRO=${ROS_DISTRO} \

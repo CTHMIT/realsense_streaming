@@ -1,34 +1,190 @@
-# Server: x86_64 GPU
-FROM nvidia/cuda:12.6.3-devel-ubuntu22.04 AS runtime
-
-ARG DEBIAN_FRONTEND=noninteractive
-ARG USER_ID=1000
-ARG GROUP_ID=1000
-ARG USERNAME=cthsu
 ARG ROS_DISTRO=humble
+ARG CUDA_VERSION=12.6.3
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu22.04 AS base
+ARG DEBIAN_FRONTEND=noninteractive
+ARG ROS_DISTRO
+
+LABEL maintainer="cthsu"
+LABEL description="ROS2 Vision System Server for x86_64 with CUDA support"
+LABEL ros.distro="${ROS_DISTRO}"
+LABEL cuda.version="${CUDA_VERSION}"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    locales tzdata curl ca-certificates gnupg sudo \
-    build-essential git wget && \
-    sed -i 's/^# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && locale-gen && \
-    update-locale LANG=en_US.UTF-8 && \
-    apt-get update && apt-get install -y curl && \
-    bash -lc 'export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F tag_name | awk -F\" "{print \$4}") && \
-      curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb" && \
-      dpkg -i /tmp/ros2-apt-source.deb' && \
-    apt-get update && apt-get install -y --no-install-recommends \
-    ros-${ROS_DISTRO}-ros-base \
-    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp && \
-    echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /etc/bash.bashrc && \
-    rm -rf /var/lib/apt/lists/*
+    locales \
+    tzdata \
+    curl \
+    ca-certificates \
+    gnupg2 \
+    lsb-release \
+    sudo \
+    build-essential \
+    cmake \
+    git \
+    git-lfs \
+    wget \
+    pkg-config \
+    python3-pip \
+    software-properties-common \
+    apt-transport-https \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /etc/sudoers.d && \
-    groupadd -g ${GROUP_ID} ${USERNAME} && \
+RUN sed -i 's/^# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && \
+    locale-gen && \
+    update-locale LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    TZ=Asia/Taipei
+
+RUN bash -lc 'export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F tag_name | awk -F\" "{print \$4}") && \
+    curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb" && \
+    dpkg -i /tmp/ros2-apt-source.deb && \
+    rm /tmp/ros2-apt-source.deb'
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || true && \
+    add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" || true
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Build tools
+    python3-colcon-common-extensions \
+    python3-rosdep \
+    python3-vcstool \
+    \
+    # Network tools
+    net-tools \
+    chrony \
+    ethtool \
+    iftop \
+    htop \
+    \
+    # ROS 2 packages
+    ros-${ROS_DISTRO}-desktop \
+    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+    \
+    # Image transport
+    ros-${ROS_DISTRO}-image-transport \
+    ros-${ROS_DISTRO}-image-transport-plugins \
+    ros-${ROS_DISTRO}-compressed-image-transport \
+    ros-${ROS_DISTRO}-compressed-depth-image-transport \
+    \
+    # Robot description
+    ros-${ROS_DISTRO}-robot-state-publisher \
+    ros-${ROS_DISTRO}-joint-state-publisher \
+    ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-urdf \
+    \
+    # Robot control
+    ros-${ROS_DISTRO}-ros2-control \
+    ros-${ROS_DISTRO}-ros2-controllers \
+    ros-${ROS_DISTRO}-controller-manager \
+    \
+    # Visualization
+    ros-${ROS_DISTRO}-rviz2 \
+    ros-${ROS_DISTRO}-rviz-common \
+    ros-${ROS_DISTRO}-rviz-default-plugins \
+    ros-${ROS_DISTRO}-rqt \
+    ros-${ROS_DISTRO}-rqt-common-plugins \
+    ros-${ROS_DISTRO}-rqt-robot-monitor \
+    \
+    # Diagnostics
+    ros-${ROS_DISTRO}-diagnostic-aggregator \
+    ros-${ROS_DISTRO}-diagnostic-updater \
+    \
+    # TF and transforms
+    ros-${ROS_DISTRO}-tf2 \
+    ros-${ROS_DISTRO}-tf2-ros \
+    ros-${ROS_DISTRO}-tf2-tools \
+    \
+    # Navigation (optional, but useful)
+    ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-nav2-bringup \
+    \
+    # FastRTPS (backup DDS)
+    ros-${ROS_DISTRO}-fastrtps \
+    \
+    # RealSense (optional, for compatibility)
+    ros-${ROS_DISTRO}-realsense2-camera \
+    ros-${ROS_DISTRO}-realsense2-description \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install development libraries
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libssl-dev \
+    libboost-all-dev \
+    libeigen3-dev \
+    libgoogle-glog-dev \
+    libgflags-dev \
+    libatlas-base-dev \
+    libsuitesparse-dev \
+    libopencv-dev \
+    libpcl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir \
+    numpy \
+    scipy \
+    matplotlib \
+    opencv-python \
+    transforms3d \
+    pyyaml
+
+# Set environment variables
+ENV ROS_DISTRO=${ROS_DISTRO} \
+    RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
+    ROS_LOCALHOST_ONLY=0 \
+    PYTHONUNBUFFERED=1 \
+    NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=all
+
+# Setup bash to source ROS 2
+SHELL ["/bin/bash", "-lc"]
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /etc/bash.bashrc && \
+    echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> /etc/bash.bashrc
+
+RUN rosdep init || true && \
+    rosdep update
+
+FROM base AS runtime
+ARG USER_ID=11408161
+ARG GROUP_ID=670
+ARG USERNAME=cthsu
+
+# Create user with matching UID/GID
+RUN groupadd -g ${GROUP_ID} ${USERNAME} && \
     useradd -m -s /bin/bash -u ${USER_ID} -g ${GROUP_ID} ${USERNAME} && \
-    usermod -aG sudo ${USERNAME} && \
+    usermod -aG sudo,video,render ${USERNAME} && \
+    mkdir -p /etc/sudoers.d && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} && \
     chmod 0440 /etc/sudoers.d/${USERNAME}
 
-USER ${USERNAME}
 WORKDIR /workspace
-ENV LANG=en_US.UTF-8 TZ=Asia/Taipei
+RUN mkdir -p /workspace/{src,build,install,log} && \
+    chown -R ${USERNAME}:${USERNAME} /workspace
+
+USER ${USERNAME}
+
+# Setup user environment
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc && \
+    echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc && \
+    echo "alias cb='colcon build --symlink-install'" >> ~/.bashrc && \
+    echo "alias cba='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release'" >> ~/.bashrc && \
+    echo "alias cbd='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Debug'" >> ~/.bashrc && \
+    echo "alias ct='colcon test'" >> ~/.bashrc && \
+    echo "alias ctr='colcon test-result --verbose'" >> ~/.bashrc && \
+    echo "alias cs='source install/setup.bash'" >> ~/.bashrc && \
+    echo "alias killros='killall -9 ros2 & killall -9 rviz2 & killall -9 rqt'" >> ~/.bashrc && \
+    echo "if [ -f /workspace/install/setup.bash ]; then source /workspace/install/setup.bash; fi" >> ~/.bashrc
+
+RUN mkdir -p ~/.rviz2
+
+# Set NVIDIA environment
+ENV NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=all \
+    LIBGL_ALWAYS_SOFTWARE=0
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD bash -lc 'command -v ros2 >/dev/null && ros2 node list >/dev/null'
+
+CMD ["bash"]

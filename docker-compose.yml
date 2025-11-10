@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   orin:
     image: robot-vision-system:orin-${VERSION:-latest}
