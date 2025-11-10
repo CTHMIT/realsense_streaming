@@ -9,6 +9,7 @@ services:
       target: runtime
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
+        L4T_TAG: ${L4T_TAG:-r36.4.0}
         USER_ID: ${USER_ID:-11408161}
         GROUP_ID: ${GROUP_ID:-670}
         USERNAME: ${USERNAME:-cthsu}
@@ -19,21 +20,22 @@ services:
     runtime: nvidia
     network_mode: host
     profiles: [orin, client]
-    gpus: all
     environment:
       - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-161}
       - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}
       - CYCLONEDDS_URI=${CYCLONEDDS_URI_ORIN:-file:///workspace/src/client/bringup/config/dds/cyclonedds_orin.xml}
-      - ROS_LOCALHOST_ONLY=0
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ROS_LOCALHOST_ONLY=${ROS_LOCALHOST_ONLY:-0}
+      - ROS_DISTRO=${ROS_DISTRO:-humble}
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:-all}
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       - ROBOT_NAMESPACE=${ROBOT_NAMESPACE:-}
       - SERVER_IP=${SERVER_IP:-10.28.121.28}
+      - BUILD_TYPE=${BUILD_TYPE:-Release}
     volumes:
-      - ./src:/workspace/src:rw
-      - ./config:/workspace/config:rw
+      - ${SRC_PATH:-./src}:/workspace/src:rw
+      - ${CONFIG_PATH:-./config}:/workspace/config:rw
       - /dev:/dev:rw
       - /etc/udev/rules.d:/etc/udev/rules.d:ro
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
@@ -44,13 +46,13 @@ services:
         [ -f /workspace/install/setup.bash ] && source /workspace/install/setup.bash || true &&
         ros2 launch client orin.launch.py robot_namespace:=${ROBOT_NAMESPACE:-}
       "
-    restart: unless-stopped
+    restart: ${RESTART_POLICY:-unless-stopped}
     healthcheck:
       test: ["CMD-SHELL", "bash -lc 'command -v ros2 >/dev/null && ros2 node list >/dev/null'"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+      interval: ${HEALTHCHECK_INTERVAL:-30}s
+      timeout: ${HEALTHCHECK_TIMEOUT:-10}s
+      retries: ${HEALTHCHECK_RETRIES:-3}
+      start_period: ${HEALTHCHECK_START_PERIOD:-60}s
 
   server:
     image: robot-vision-system:server-${VERSION:-latest}
@@ -69,22 +71,23 @@ services:
     privileged: false
     network_mode: host
     profiles: [server]
-    gpus: all
     environment:
       - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-161}
       - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}
       - CYCLONEDDS_URI=${CYCLONEDDS_URI_SERVER:-file:///workspace/src/server/bringup/config/dds/cyclonedds_server.xml}
-      - ROS_LOCALHOST_ONLY=0
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ROS_LOCALHOST_ONLY=${ROS_LOCALHOST_ONLY:-0}
+      - ROS_DISTRO=${ROS_DISTRO:-humble}
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:-all}
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       - LIBGL_ALWAYS_SOFTWARE=0
       - ROBOT_NAMESPACE=${ROBOT_NAMESPACE:-}
       - ORIN_IP=${ORIN_IP:-10.28.134.61}
+      - BUILD_TYPE=${BUILD_TYPE:-Release}
     volumes:
-      - ./src:/workspace/src:rw
-      - ./config:/workspace/config:rw
+      - ${SRC_PATH:-./src}:/workspace/src:rw
+      - ${CONFIG_PATH:-./config}:/workspace/config:rw
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${HOME}/.Xauthority:/home/ros/.Xauthority:ro
       - server-data:/home/ros/.ros:rw
@@ -95,14 +98,14 @@ services:
         [ -f /workspace/install/setup.bash ] && source /workspace/install/setup.bash || true &&
         ros2 launch server server.launch.py robot_namespace:=${ROBOT_NAMESPACE:-}
       "
-    restart: unless-stopped
+    restart: ${RESTART_POLICY:-unless-stopped}
     healthcheck:
       test: ["CMD-SHELL", "bash -lc 'command -v ros2 >/dev/null && ros2 node list >/dev/null'"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    shm_size: "16g"
+      interval: ${HEALTHCHECK_INTERVAL:-30}s
+      timeout: ${HEALTHCHECK_TIMEOUT:-10}s
+      retries: ${HEALTHCHECK_RETRIES:-3}
+      start_period: ${HEALTHCHECK_START_PERIOD:-60}s
+    shm_size: ${SHM_SIZE:-16g}
 
   rviz:
     image: robot-vision-system:server-${VERSION:-latest}
@@ -110,17 +113,17 @@ services:
     hostname: rviz
     network_mode: host
     profiles: [viz, visualization]
-    gpus: all
     environment:
       - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-161}
       - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}
-      - ROS_LOCALHOST_ONLY=0
+      - ROS_LOCALHOST_ONLY=${ROS_LOCALHOST_ONLY:-0}
+      - ROS_DISTRO=${ROS_DISTRO:-humble}
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:-all}
     volumes:
-      - ./src:/workspace/src:ro
+      - ${SRC_PATH:-./src}:/workspace/src:ro
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${HOME}/.Xauthority:/home/ros/.Xauthority:ro
     command: >
