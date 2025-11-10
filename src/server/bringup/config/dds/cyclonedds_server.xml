@@ -4,25 +4,16 @@
             xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
     <Domain id="any">
         <General>
-            <NetworkInterface>
-                <Name>enp3s0</Name>
-            </NetworkInterface>
-
-            <AllowMulticast>false</AllowMulticast>
-            <Transport>
-                <Property>
-                    <Name>min_socket_recv_buffer_size</Name>
-                    <Value>10MB</Value>
-                </Property>
-            </Transport>
-            
+            <Interfaces>
+                <NetworkInterface>
+                    <Name>enp2s0</Name>
+                </NetworkInterface>
+            </Interfaces>
         </General>
         <Discovery>
             <Peers>
                 <Peer address="10.28.134.61"/>
             </Peers>
-            
-            <MaxMessageSize>65500B</MaxMessageSize>
         </Discovery>
     </Domain>
 </CycloneDDS>

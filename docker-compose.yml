@@ -72,6 +72,7 @@ services:
     container_name: server
     hostname: server
     privileged: false
+    runtime: nvidia
     network_mode: host
     profiles: [server]
     environment:
@@ -98,8 +99,13 @@ services:
     command: >
       bash -lc "
         source /opt/ros/${ROS_DISTRO:-humble}/setup.bash &&
-        [ -f /workspace/install/setup.bash ] && source /workspace/install/setup.bash || true &&
-        ros2 launch server server.launch.py 
+        if [ -f /workspace/install/setup.bash ]; then
+          source /workspace/install/setup.bash &&
+          ros2 launch server server.launch.py 
+        else
+          echo 'Workspace not built. Run: docker compose run --rm server bash' &&
+          tail -f /dev/null
+        fi
       "
     restart: ${RESTART_POLICY:-unless-stopped}
     healthcheck:
