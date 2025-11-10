@@ -43,7 +43,7 @@ services:
         source /opt/ros/humble/setup.bash &&
         if [ -f /workspace/install/setup.bash ]; then
           source /workspace/install/setup.bash &&
-          ros2 launch client orin.launch.py robot_namespace:=${ROBOT_NAMESPACE:-}
+          ros2 launch client orin.launch.py 
         else
           echo 'Workspace not built. Run: docker compose run --rm orin bash' &&
           tail -f /dev/null
@@ -99,7 +99,7 @@ services:
       bash -lc "
         source /opt/ros/${ROS_DISTRO:-humble}/setup.bash &&
         [ -f /workspace/install/setup.bash ] && source /workspace/install/setup.bash || true &&
-        ros2 launch server server.launch.py robot_namespace:=${ROBOT_NAMESPACE:-}
+        ros2 launch server server.launch.py 
       "
     restart: ${RESTART_POLICY:-unless-stopped}
     healthcheck:
