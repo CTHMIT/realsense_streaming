@@ -49,6 +49,16 @@ RUN apt-get update && apt-get install -y \
     && add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" \
     && rm -rf /var/lib/apt/lists/*
 
+ARG ISAAC_ROS_APT_REPO=https://isaac.download.nvidia.com/isaac-ros/release-3
+RUN curl -fsSL ${ISAAC_ROS_APT_REPO}/repos.key | gpg --dearmor -o /usr/share/keyrings/nvidia-isaac-ros.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/nvidia-isaac-ros.gpg] ${ISAAC_ROS_APT_REPO} $(lsb_release -cs) main" | \
+    tee /etc/apt/sources.list.d/isaac-ros.list
+
+RUN apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-isaac-ros-h264-encoder \
+    ros-${ROS_DISTRO}-isaac-ros-common \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-colcon-common-extensions \
     python3-rosdep \
