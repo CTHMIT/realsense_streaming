@@ -32,7 +32,7 @@ repositories:
   # RealSense SDK 2.0
   realsense-ros:
     type: git
-    url: https://github.com/IntelRealSense/librealsense/releases.git
+    url: https://github.com/IntelRealSense/librealsense.git
     version: master
 
 # Note: Isaac ROS packages should be installed via APT
