@@ -6,8 +6,8 @@ PROJECT_NAME := robot-vision-system
 VERSION ?= latest
 
 # User configuration
-USER_ID := $(shell id -u)
-GROUP_ID := $(shell id -g)
+USER_ID := $(USER_ID)
+GROUP_ID := $(GROUP_ID)
 USERNAME := $(USER)
 
 # Network configuration
