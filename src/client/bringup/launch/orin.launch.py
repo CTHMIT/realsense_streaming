@@ -1,14 +1,14 @@
 from launch import LaunchDescription
 from launch.actions import (
-    IncludeLaunchDescription, SetEnvironmentVariable, 
-    DeclareLaunchArgument, LogInfo
+    SetEnvironmentVariable, 
+    DeclareLaunchArgument, 
+    LogInfo,
 )
 from launch.substitutions import (
-    PathJoinSubstitution, LaunchConfiguration, 
-    EnvironmentVariable
+    PathJoinSubstitution, 
+    LaunchConfiguration, 
 )
 from launch_ros.substitutions import FindPackageShare
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
 
@@ -16,11 +16,10 @@ def generate_launch_description():
   
     robot_namespace_arg = DeclareLaunchArgument(
         'robot_namespace',
-        default_value='',  # Empty namespace for global topics
+        default_value='',
         description='Robot namespace'
     )
     
-    # DDS
     cyclonedds_config = PathJoinSubstitution([
         FindPackageShare('client'),
         'bringup', 'config', 'dds', 'cyclonedds_orin.xml'
@@ -31,20 +30,17 @@ def generate_launch_description():
     set_dds_config = SetEnvironmentVariable('CYCLONEDDS_URI', 
         ['file://', cyclonedds_config])
     
-    # RealSense
     realsense_config = PathJoinSubstitution([
         FindPackageShare('client'),
         'sensors', 'config', 'realsense_params.yaml'
     ])
     
-    # NITROS Container
     isaac_container = ComposableNodeContainer(
         name='isaac_container',
         namespace=LaunchConfiguration('robot_namespace'),
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[
-            # RealSense Camera
             ComposableNode(
                 package='realsense2_camera',
                 plugin='realsense2_camera::RealSenseNodeFactory',
